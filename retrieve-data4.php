@@ -24,7 +24,7 @@ header('Access-Control-Allow-Methods: GET, POST');
 
    // Attempt to query database table and retrieve data
    try {
-      $stmt 	= $pdo->query('SELECT * FROM customer ORDER BY user_id ASC');
+      $stmt 	= $pdo->query('SELECT * FROM province  ORDER BY province_id ASC');
       while($row  = $stmt->fetch(PDO::FETCH_OBJ))
       {
          // Assign each row of data to associative array

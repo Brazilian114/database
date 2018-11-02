@@ -7,7 +7,7 @@ header('Access-Control-Allow-Methods: GET, POST');
    $hn      = 'localhost';
    $un      = 'root';
    $pwd     = '';
-   $db      = 'carcare';
+   $db      = 'project';
    $cs      = 'utf8';
 
    // Set up the PDO parameters

@@ -7,7 +7,7 @@ header('Access-Control-Allow-Methods: GET, POST');
    $hn      = 'localhost';
    $un      = 'root';
    $pwd     = '';
-   $db      = 'carcare';
+   $db      = 'project';
    $cs      = 'utf8';
 
    // Set up the PDO parameters
@@ -98,8 +98,30 @@ header('Access-Control-Allow-Methods: GET, POST');
         }
 
      break;
+  
+  case "delete":
+
+  // Sanitise supplied record ID for matching to table record
+  $recordID	=	filter_var($obj->recordID, FILTER_SANITIZE_NUMBER_INT);
+
+  // Attempt to run PDO prepared statement
+  try {
+     $pdo 	= new PDO($dsn, $un, $pwd);
+     $sql 	= "DELETE FROM booking WHERE booking_id = :recordID";
+     $stmt 	= $pdo->prepare($sql);
+     $stmt->bindParam(':recordID', $recordID, PDO::PARAM_INT);
+     $stmt->execute();
+
+     echo json_encode('Congratulations the record1234 ' . $created . ' was removed');
+  }
+  // Catch any errors in running the prepared statement
+  catch(PDOException $e)
+  {
+     echo $e->getMessage();
   }
 
+break;
+}
       // Remove an existing record in the technologies table
 
 ?>
