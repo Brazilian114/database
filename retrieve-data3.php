@@ -24,11 +24,11 @@ header('Access-Control-Allow-Methods: GET, POST');
 
    // Attempt to query database table and retrieve data
    try {
-      $stmt 	= $pdo->query('SELECT booking.user_id_fk,booking.created,booking.province,booking.booking_service_id,booking.license, booking.tel, 
-                                booking.status_id,  booking.tel, customer.email,booking_time.time ,status.status_name FROM booking
+      $stmt 	= $pdo->query('SELECT booking.user_id_fk,booking.created,booking.province,booking_service.service_name,booking.license, booking.tel, 
+                                booking.status_id,  booking.tel, customer.email,status.status_name ,booking_service.service_price FROM booking
 
-                               INNER JOIN customer ON booking.user_id_fk=customer.user_id LEFT JOIN booking_time ON booking.time_id=booking_time.time_id 
-                               INNER JOIN status ON booking.status_id=status.status_id
+                               INNER JOIN customer ON booking.user_id_fk=customer.user_id 
+                               INNER JOIN status ON booking.status_id=status.status_id    INNER JOIN booking_service ON booking.booking_service_id=booking_service.booking_service_id
 
                                ORDER BY booking_id DESC');
       while($row  = $stmt->fetch(PDO::FETCH_OBJ))
