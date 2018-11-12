@@ -24,12 +24,7 @@ header('Access-Control-Allow-Methods: GET, POST');
 
    // Attempt to query database table and retrieve data
    try {
-      $stmt 	= $pdo->query('SELECT *  FROM booking
-
-                               INNER JOIN customer ON booking.user_id_fk=customer.user_id 
-                               INNER JOIN status ON booking.status_id=status.status_id    INNER JOIN booking_service ON booking.booking_service_id=booking_service.booking_service_id
-                               WHERE booking.status_id = "3"
-                               ORDER BY booking_id DESC');
+      $stmt 	= $pdo->query('SELECT * FROM promo ORDER BY promo_id ASC');
       while($row  = $stmt->fetch(PDO::FETCH_OBJ))
       {
          // Assign each row of data to associative array

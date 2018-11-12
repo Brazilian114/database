@@ -112,7 +112,7 @@ header('Access-Control-Allow-Methods: GET, POST');
      $stmt->bindParam(':recordID', $recordID, PDO::PARAM_INT);
      $stmt->execute();
 
-     echo json_encode('Congratulations the record1234 ' . $created . ' was removed');
+     echo json_encode('Congratulations the record1234 '' was removed');
   }
   // Catch any errors in running the prepared statement
   catch(PDOException $e)
