@@ -9,6 +9,7 @@ header('Access-Control-Allow-Methods: GET, POST');
    $pwd     = '';
    $db      = 'project';
    $cs      = 'utf8';
+
    // Set up the PDO parameters
    $dsn 	= "mysql:host=" . $hn . ";port=3306;dbname=" . $db . ";charset=" . $cs;
    $opt 	= array(
@@ -19,14 +20,17 @@ header('Access-Control-Allow-Methods: GET, POST');
    // Create a PDO instance (connect to the database)
    $pdo 	= new PDO($dsn, $un, $pwd, $opt);
    $data    = array();
+
+
    // Attempt to query database table and retrieve data
    try {
-      $stmt 	= $pdo->query('SELECT * FROM province  ORDER BY province_id ASC');
+      $stmt 	= $pdo->query('SELECT * FROM manual ORDER BY manual_id ASC');
       while($row  = $stmt->fetch(PDO::FETCH_OBJ))
       {
          // Assign each row of data to associative array
          $data[] = $row;
       }
+
       // Return data as JSON
       echo json_encode($data);
    }
@@ -34,4 +38,6 @@ header('Access-Control-Allow-Methods: GET, POST');
    {
       echo $e->getMessage();
    }
+
+
 ?>
