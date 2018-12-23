@@ -19,28 +19,34 @@ header('Access-Control-Allow-Methods: GET, POST');
                        );
    // Create a PDO instance (connect to the database)
    $pdo 	= new PDO($dsn, $un, $pwd, $opt);
-   $data    = array();
+   //$data    = array();
 
   //SELECT booking.username,booking_detail.booking_service_id,booking_service.service_name FROM `booking` 
  //inner JOIN booking_detail on booking.booking_id = booking_detail.booking_id inner JOIN booking_service on booking_detail.booking_service_id = booking_service.booking_service_id ; 
    // Attempt to query database table and retrieve data
    try {
-      $stmt 	= $pdo->query('SELECT booking.username,booking_service.service_name  FROM booking
+      $orders = $pdo->query("SELECT ords.booking_id as ID , cust.username  FROM booking as ords JOIN customer as cust ON ords.user_id_fk = cust.user_id
+                             JOIN booking_detail as odeet ON ords.booking_id = odeet.booking_id 
+                             GROUP BY ords.booking_id ORDER BY ords.booking_id DESC");
 
-                               INNER JOIN customer ON booking.user_id_fk=customer.user_id 
-                               INNER JOIN status ON booking.status_id=status.status_id  
-                               INNER JOIN booking_detail ON booking.booking_id = booking_detail.booking_id 
-                               INNER JOIN booking_service on booking_detail.booking_service_id = booking_service.booking_service_id 
-                               WHERE booking.status_id = "1" ORDER BY booking.booking_id
-                              ');
-      while($row  = $stmt->fetch(PDO::FETCH_OBJ))
-      {
-         // Assign each row of data to associative array
-         $data[] = $row;
+      $json_response = array();
+      $iid = $pdo->lastInsertId();
+      foreach ( $orders as $row ) {
+         
+         $row_array = (array)$row;
+         $ord_id = $row->ID;
+      
+          $orders2 = $pdo->query("SELECT service_name FROM booking_detail as ord
+              JOIN booking_service as prod ON ord.booking_service_id = prod.booking_service_id
+              ");
+          foreach ( $orders2 as $vorder2 ) {
+              $row_array['booking_service'][] = $vorder2;
+          }
+          $json_response[] = $row_array;
       }
-
+      echo json_encode($json_response);
       // Return data as JSON
-      echo json_encode($data);
+      
    }
    catch(PDOException $e)
    {
